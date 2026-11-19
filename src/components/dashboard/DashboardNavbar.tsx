@@ -1,0 +1,81 @@
+"use client"
+
+// import Logo from "@/components/shared/Logo";
+
+import ThemeToggle from "@/components/shared/ThemeToggle"
+import DropDownHober from "@/components/home/DropDownHover"
+import Link from "next/link";
+import { usePathname } from 'next/navigation';
+import { authClient } from "@/lib/auth-client";
+import React, { useState, useEffect } from 'react';
+
+
+
+const DashboardNavbar = () => {
+const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+
+// const { data: session,  isPending } = authClient.useSession();
+ const { data: session } = authClient.useSession();
+console.log (session, "session")
+
+const user = session?.user;
+const role = session?.user?.role;
+console.log (user, "user");
+
+// const handleSignOut = async () => {
+//     await authClient.signOut();
+// };
+
+    const pathname = usePathname();
+    console.log (pathname, "pathname");
+   
+
+    const isActive = (href: string) =>{
+       return href === pathname;
+    };
+
+    
+
+
+
+    return (
+        <nav className='flex justify-between container mx-auto p-2 gap-20 bg-[#0F172B] '>
+            <div className='m-6'>   logo </div>
+            {/* linkpage */}
+            <div className='flex gap-2  items-center'>
+               <ul className='flex gap-4 text-orange-600 font-bold'>
+                                   <li className=''><Link href={"/"} className={`${isActive ("/") ? "  border-b-4 border-b-orange-600": "" }`}  >Home</Link></li>
+                                   <li><Link href={"/products"} className={`${isActive ("/products") ? " border-b-4 border-b-green-600" : ""}`} >Products</Link></li>
+              </ul>
+               </div>
+               {/* user part */}
+               <div className='rounded-full flex gap-2 '> 
+         <DropDownHober />
+         <div className='flex flex-col '>
+<h2 className='text-orange-600'>{mounted ? user?.name : ''} 
+   {/* {mounted ? user?.name : ''} */}
+   </h2> 
+         <span className= {`font-bold ${role === "seller" ? "text-orange-400" : 
+        role === "buyer" ? "text-orange-400" : "text-orange-600"}`}>   {mounted ? role : ''} 
+        {/* {mounted ? role : ''} */}
+         </span>
+         </div>
+
+         <div className='m-6'>
+            <ThemeToggle />
+         </div>  
+      </div>
+            
+                  {/* there was the extra div */}
+                    {/* login part */}
+                        
+                    
+        </nav>
+    );
+};
+
+export default DashboardNavbar;
