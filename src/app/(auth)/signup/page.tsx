@@ -163,7 +163,7 @@ const SignupPage = () => {
             {/* social div */}
             <div className="flex flex-col justify-center items-center gap-2">
                   <Button type="submit" className="w-80 mt-2 font-bold bg-[#FFC000]">
-              Sign In
+              Sign up
             </Button>
 
             <div className="divider mr-8 text-sm text-gray-400">OR</div>
@@ -198,7 +198,7 @@ const SignupPage = () => {
 
             <p className="text-sm">Already have an account</p>
             <span className="text-sm font-bold text-blue-700">
-              <Link href="/login"> sign in </Link>
+              <Link href="/signin"> sign in </Link>
             </span>
           </form>
         </div>

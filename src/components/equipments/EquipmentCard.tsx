@@ -17,12 +17,14 @@ import {
   BadgeCheck,
   Boxes,
   CircleDollarSign,
+  Heart,
   ImageOff,
   MapPin,
   Wrench,
 } from "lucide-react";
 import { cn } from "cn";
 import type { Equipment } from "@/types/equipment";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface EquipmentCardProps {
   equipment: Equipment;
@@ -39,12 +41,13 @@ const conditionStyles: Record<string, string> = {
 
 const statusStyles: Record<string, string> = {
   Approved: "bg-emerald-500/90 text-white",
-  Pending: "bg-amber-500/90 text-white",
+  Pending: "bg-red-500/90 text-white",
   Rejected: "bg-destructive/90 text-white",
 };
 
 const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
   const [imageFailed, setImageFailed] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const {
     _id,
@@ -118,6 +121,35 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
               {availabilityStatus}
             </span>
           )}
+
+          {/* Favorite (heart) toggle */}
+          <motion.button
+            type="button"
+            onClick={() => toggleFavorite(_id)}
+            whileTap={{ scale: 0.85 }}
+            aria-pressed={isFavorite(_id)}
+            aria-label={
+              isFavorite(_id)
+                ? `Remove ${name} from favorites`
+                : `Add ${name} to favorites`
+            }
+            title={
+              isFavorite(_id) ? "Remove from favorites" : "Add to favorites"
+            }
+            className={cn(
+              "absolute bottom-3 right-3 z-10 inline-flex size-9 items-center justify-center rounded-full border border-foreground/10 bg-red-500 shadow-md backdrop-blur transition-colors duration-200 outline-none",
+              isFavorite(_id)
+                ? "bg-red-500 hover:text-blue-900"
+                : "text-muted-foreground hover:text-blue-900",
+            )}
+          >
+            <Heart
+              className={cn(
+                "size-5 transition-transform duration-200",
+                isFavorite(_id) && "fill-current",
+              )}
+            />
+          </motion.button>
         </div>
 
         {/* ---------- Body layer ---------- */}

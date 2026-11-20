@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toast"
 
 import NextThemeProvider from "@/providers/NextThemeProvider"
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +26,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
          <NextThemeProvider>
 
         {children}
         <Toaster />
-          {/* <ToastContainer position="top-right" />  */}
+          <ToastContainer position="top-right" /> 
            {/* <Footer /> */}
       </NextThemeProvider>
       
