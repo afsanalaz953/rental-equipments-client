@@ -87,7 +87,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
     // ---------- 3. Update stock ----------
     try {
       const stockRes = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${metadata?.productId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/products/${metadata?.equipmentId}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -124,7 +124,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
       }
 
       console.log('📦 customerOrder payload:', ownerOrderData)
-
+// orders date enter to the ordercollection
       const resData = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
