@@ -48,7 +48,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
   }
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/payments`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/checkout_sessions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(paymentData),

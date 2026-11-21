@@ -1,5 +1,5 @@
 import React from 'react';
-import PaymentTable from "@/components/dashboard/PaymentTable";
+import PaymentTable from '@/components/customer/PaymentTable';
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
