@@ -62,7 +62,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
     console.error('❌ Payment fetch error:', (error as Error).message)
   }
 
-  // ---------- 2. Idempotency check ----------
+  // // ---------- 2. Idempotency check ----------
   let orderExists = false
   try {
     const checkRes = await fetch(

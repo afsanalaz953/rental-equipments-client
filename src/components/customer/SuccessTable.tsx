@@ -12,7 +12,7 @@ type SuccessTableProps = {
     price?: string | number;
     totalPrice?: string | number;
     quantity?: string | number;
-    productId?: string;
+    equipmentId?: string;
   } | null;
 };
 
@@ -120,7 +120,7 @@ const SuccessTable = ({ customerEmail, metadata }: SuccessTableProps) => {
 
             {/* Action Button */}
             <div className="card-actions justify-end mt-4">
-              <Link href={`/products/${metadata?.productId || '#'}`}>
+              <Link href={`/equipments/${metadata?.equipmentId || '#'}`}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}

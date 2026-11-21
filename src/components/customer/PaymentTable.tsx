@@ -52,7 +52,7 @@ const PaymentTable = ({ payments }: PaymentTableProps) => {
  <Table className='lg:w-min-700 bg-yellow-200 my-10 md:`w-[760px]` '>
   <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
-      <Table.Header>
+      <Table.Header className='bg-blue-900'>
         {/* <Table.Column className= "font-bold text-lg">Photo</Table.Column> */}
         <Table.Column className= "font-bold text-lg"  isRowHeader>Transaction ID</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Equipment Name</Table.Column>
