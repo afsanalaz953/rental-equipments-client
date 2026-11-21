@@ -97,7 +97,7 @@ export default function BuyFormCustomer({
                       name="name"
                       defaultValue={defaultName}
                     >
-                      <Label>Buyer Name</Label>
+                      <Label>Customer Name</Label>
                       <Input placeholder="Enter your name" className="rounded-2xl" />
                     </TextField>
 
@@ -108,18 +108,18 @@ export default function BuyFormCustomer({
                       name="email"
                       defaultValue={defaultEmail}
                     >
-                      <Label>Buyer Email</Label>
+                      <Label>Customer Email</Label>
                       <Input placeholder="Email" />
                     </TextField>
 
                     <TextField className="w-full" name="phone" type="tel">
-                      <Label>Buyer Phone</Label>
+                      <Label>Customer Phone</Label>
                       <Input placeholder="Enter your phone number" />
                     </TextField>
 
                     {/* Product name — display only (hidden input ইতিমধ্যেই আছে) */}
                     <TextField className="w-full" defaultValue={title} isReadOnly>
-                      <Label>Product Name</Label>
+                      <Label>Equipment Name</Label>
                       <Input placeholder="product" />
                     </TextField>
 
@@ -144,7 +144,7 @@ export default function BuyFormCustomer({
                         Cancel
                       </Button>
                       <Button type="submit" isDisabled={isLoading}>
-                        {isLoading ? "Creating Order..." : "Buy Product"}
+                        {isLoading ? "Creating Order..." : "Buy Equipment"}
                       </Button>
                     </div>
                   </form>

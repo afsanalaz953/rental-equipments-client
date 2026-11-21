@@ -151,9 +151,9 @@ const { title, category, condition, price, status,
 {userRole === 'customer' ? (       
   <BuyFormCustomer 
   singleEquip={singleEquip} 
-// action="/api/payments"
+action="/api/checkout_sessions"
 //  token={token} 
-// method="POST"
+method="POST"
 />
 ) : (
               <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center">
