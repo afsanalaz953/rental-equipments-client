@@ -21,7 +21,7 @@ const Navbar = () => {
 
   const links = [
     { href: "/", label: "Home" },
-    { href: "/upcoming", label: "Upcoming" },
+    { href: "/equipments", label: "All Equipments" },
     // { href: "/profile", label: "My Profile" },
     // { href: "/products", label: "Products" },
   ];
@@ -116,16 +116,16 @@ const Navbar = () => {
           {/* ---- Logo ---- */}
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/assets/offset-colour-leaves_78370-6228.avif"
-              alt="Serein Furniture Hub logo"
+              src="/assets/rentalogo.png"
+              alt="rental euipment logo"
               width={50}
               height={50}
-              className="rounded-full object-cover bg-[#D9EF78]"
+              className="rounded-full object-cover bg-[#FFC000]"
             />
             <div>
-              <p className="text-3xl font-bold tracking-widest  hover:text-white">shomaj.</p>
+              <p className="text-3xl font-bold tracking-widest text-[#FFC000] hover:text-white"> RC</p>
               {/* <p className="font-bold text-2xl leading-none">Shomaj.</p> */}
-              <p className="text-[#087C7E] text-sm">Social Events Hub</p>
+              <p className="text-[#087C7E] hover:text-white text-sm">Rental Equipments</p>
             </div>
           </Link>
         </div>
@@ -137,7 +137,7 @@ const Navbar = () => {
               <li key={href}>
                 <Link
                   href={href}
-                  className={`pb-1 transition-colors hover:text-[#087C7E] ${
+                  className={`pb-1 transition-colors text-[#FFC000] hover:text-[#087C7E] ${
                     isActive(href) ? "border-b-4 border-b-cyan-600" : ""
                   }`}
                 >
@@ -156,7 +156,7 @@ const Navbar = () => {
             <div className="flex items-center gap-2">
               <DropDownHover />
               <Button
-                className="btn bg-[#087C7E] text-white hover:bg-[#066567]"
+                className="btn bg-[#FFC000] text-white hover:bg-[#066567]"
                 onClick={async () =>{ await authClient.signOut();
                    router.push("/");
                    router.refresh(); 
@@ -170,7 +170,7 @@ const Navbar = () => {
                <button> 
               <Link
                 href="/signin"
-                className=" bg-[#EB7036] rounded-full p-2 text-white hover:bg-[#EB7036]"
+                className=" bg-[#FFC000] rounded-full p-2 text-white hover:bg-[#EB7036]"
               >
                 Sign in
               </Link>
@@ -178,7 +178,7 @@ const Navbar = () => {
               <button>
               <Link
                 href="/signup"
-                className=" bg-[#EB7036] rounded-full p-2 text-white hover:bg-[#EB7036]"
+                className=" bg-[#FFC000] rounded-full p-2 text-white hover:bg-[#EB7036]"
               >
                 Sign Up
               </Link>

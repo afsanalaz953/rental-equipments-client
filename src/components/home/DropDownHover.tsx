@@ -59,29 +59,29 @@ const DropDownHover = () => {
 
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem>
-          <Link href='/create' className="flex gap-2 items-center">
+          <Link href='/profile' className="flex gap-2 items-center">
            <UserIcon />
-           <span>Create</span> 
+           <span>Profile</span> 
            </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        {/* <DropdownMenuItem>
         <Link href='/manage' className="flex gap-2 items-center ">
           <SettingsIcon /> 
           <span>Manage </span> 
         </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem>
-      <Link href='/joined' className="flex gap-2 items-center ">
+      <Link href='/dashboard' className="flex gap-2 items-center ">
          <CreditCardIcon />
-          <span> Joined</span>
+          <span> Dashboard</span>
           </Link>
         </DropdownMenuItem>
-         <DropdownMenuItem>
+         {/* <DropdownMenuItem>
       <Link href='/profile' className="flex gap-2 items-center ">
         <UserIcon />
           <span> Profile</span>
           </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <DropdownMenuItem variant="destructive" onClick={handleLogout}>
           <LogOutIcon /> Log out
