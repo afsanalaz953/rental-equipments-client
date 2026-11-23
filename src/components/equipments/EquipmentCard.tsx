@@ -17,14 +17,15 @@ import {
   BadgeCheck,
   Boxes,
   CircleDollarSign,
-  Heart,
+
   ImageOff,
   MapPin,
   Wrench,
 } from "lucide-react";
 import { cn } from "cn";
 import type { Equipment } from "@/types/equipment";
-import { useFavorites } from "@/hooks/useFavorites";
+// import { useFavorites } from "@/hooks/useFavorites";
+import WishlistButton from '@/components/customer/WishlistButton'
 
 interface EquipmentCardProps {
   equipment: Equipment;
@@ -47,7 +48,7 @@ const statusStyles: Record<string, string> = {
 
 const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
   const [imageFailed, setImageFailed] = useState(false);
-  const { isFavorite, toggleFavorite } = useFavorites();
+  // const { isFavorite, toggleFavorite } = useFavorites();
 
   const {
     _id,
@@ -123,7 +124,7 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
           )}
 
           {/* Favorite (heart) toggle */}
-          <motion.button
+          {/* <motion.button
             type="button"
             onClick={() => toggleFavorite(_id)}
             whileTap={{ scale: 0.85 }}
@@ -149,7 +150,11 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
                 isFavorite(_id) && "fill-current",
               )}
             />
-          </motion.button>
+          </motion.button> */}
+          <span className="absolute bottom-3 right-3 z-10 bg-red-600 rounded-full"   >
+              <WishlistButton equipmentData = {equipment}/>
+          </span>
+         
         </div>
 
         {/* ---------- Body layer ---------- */}
