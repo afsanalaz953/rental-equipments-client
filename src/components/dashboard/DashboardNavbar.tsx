@@ -49,7 +49,7 @@ console.log (user, "user");
             <div className='flex gap-2  items-center'>
                <ul className='flex gap-4 text-orange-600 font-bold'>
                                    <li className=''><Link href={"/"} className={`${isActive ("/") ? "  border-b-4 border-b-orange-600": "" }`}  >Home</Link></li>
-                                   <li><Link href={"/products"} className={`${isActive ("/products") ? " border-b-4 border-b-green-600" : ""}`} >Products</Link></li>
+                                   <li><Link href={"/equipments"} className={`${isActive ("/equipments") ? " border-b-4 border-b-green-600" : ""}`} >Equipments</Link></li>
               </ul>
                </div>
                {/* user part */}
@@ -59,10 +59,10 @@ console.log (user, "user");
 <h2 className='text-orange-600'>{mounted ? user?.name : ''} 
    {/* {mounted ? user?.name : ''} */}
    </h2> 
-         <span className= {`font-bold ${role === "seller" ? "text-orange-400" : 
-        role === "buyer" ? "text-orange-400" : "text-orange-600"}`}>   {mounted ? role : ''} 
+         {/* <span className= {`font-bold ${role === "owner" ? "text-orange-400" : 
+        role === "customer" ? "text-orange-400" : "text-orange-600"}`}>   {mounted ? role : ''}  */}
         {/* {mounted ? role : ''} */}
-         </span>
+         {/* </span>  */}
          </div>
 
          <div className='m-6'>

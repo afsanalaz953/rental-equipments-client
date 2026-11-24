@@ -59,7 +59,7 @@ const DropDownHover = () => {
 
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem>
-          <Link href='/profile' className="flex gap-2 items-center">
+          <Link href={`/dashboard/${userRole}/profile`} className="flex gap-2 items-center">
            <UserIcon />
            <span>Profile</span> 
            </Link>
