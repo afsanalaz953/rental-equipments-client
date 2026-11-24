@@ -43,13 +43,13 @@ console.log(singleEquip,"single product in idpage")
     //  totalAmount: totalPrice
 
     const user = userSession?.user;
-     const customerEmail = user?.email;
-     const customerName = user?.name;
+    //  const customerEmail = user?.email;
+    //  const customerName = user?.name;
      const userRole = user?.role; 
   // const isSlotAvailable = availableStock > 0;
 
 const { title, category, condition, price, status, 
-    description, image, stock,
+    description, stock, image,
        
   } = singleEquip;
 

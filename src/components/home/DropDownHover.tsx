@@ -52,7 +52,7 @@ const DropDownHover = () => {
               height={40}
               className="w-10 h-10 rounded-full object-cover"
             />
-            <span className="text-white ">{user?.role}</span>
+            <span className="text-[#FFC000] ">{user?.role}</span>
           </button>
         }
       />
@@ -71,7 +71,7 @@ const DropDownHover = () => {
         </Link>
         </DropdownMenuItem> */}
         <DropdownMenuItem>
-      <Link href='/dashboard' className="flex gap-2 items-center ">
+      <Link href='/dashboard/${user.role}' className="flex gap-2 items-center ">
          <CreditCardIcon />
           <span> Dashboard</span>
           </Link>
