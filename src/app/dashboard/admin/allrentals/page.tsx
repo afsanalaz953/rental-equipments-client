@@ -52,7 +52,7 @@ const AdminRentalManagePage = async ({searchParams}: AdminRentalManagePageProps)
         <ProductSearch />
       </div>
 
-      <div className="my-10 rounded lg:w-full md:w-[760px] shadow-lg">
+      <div className="my-10 rounded lg:w-full md:w-[760px] shadow-lg ml-15">
         <Table  className="bg-[#FFC000]">
           <Table.ScrollContainer>
             <Table.Content aria-label="Team members">

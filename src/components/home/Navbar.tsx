@@ -125,7 +125,7 @@ const Navbar = () => {
             <div>
               <p className="text-3xl font-bold tracking-widest text-[#FFC000] hover:text-white"> RC</p>
               {/* <p className="font-bold text-2xl leading-none">Shomaj.</p> */}
-              <p className="text-[#087C7E] hover:text-white text-sm">Rental Equipments</p>
+              <p className="text-[#2B7FFF] hover:text-white text-sm">Rental Equipments</p>
             </div>
           </Link>
         </div>
@@ -170,7 +170,7 @@ const Navbar = () => {
                <button> 
               <Link
                 href="/signin"
-                className=" bg-[#FFC000] rounded-full p-2 text-white hover:bg-[#EB7036]"
+                className=" bg-[#FFC000] rounded-full p-2 text-[#2f77e4] hover:bg-[#EB7036]"
               >
                 Sign in
               </Link>
@@ -178,7 +178,7 @@ const Navbar = () => {
               <button>
               <Link
                 href="/signup"
-                className=" bg-[#FFC000] rounded-full p-2 text-white hover:bg-[#EB7036]"
+                className=" bg-[#FFC000] rounded-full p-2 text-[#2B7FFF] hover:bg-[#EB7036]"
               >
                 Sign Up
               </Link>

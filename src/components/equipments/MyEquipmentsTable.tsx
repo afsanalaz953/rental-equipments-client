@@ -20,6 +20,7 @@ import {
   PencilLine,
   Trash2,
 } from "lucide-react";
+import Link from "next/link";
 
 type MyEquipmentRow = Equipment & { imageUrl?: string };
 
@@ -117,6 +118,7 @@ const MyEquipmentsTable = ({ equipments }: MyEquipmentsTableProps) => {
             <TableHead>Status</TableHead>
             <TableHead>Owner</TableHead>
             <TableHead>Added On</TableHead>
+            <TableHead>id</TableHead>
             <TableHead className="text-right">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -243,18 +245,20 @@ const MyEquipmentsTable = ({ equipments }: MyEquipmentsTableProps) => {
                       whileTap="tap"
                       variants={actionButton}
                     >
+                        <Link href={`/equipments/${item._id}`} aria-label="View equipment">
                       <Button
-                        type="button"
                         size="sm"
                         variant="outline"
                         aria-label="View equipment"
                         className="gap-1.5 text-emerald-600 hover:text-emerald-600 dark:text-emerald-400"
                       >
+                        
                         <Eye />
                         View
                       </Button>
+                      </Link>
                     </motion.div>
-
+<TableCell> {item._id}  </TableCell>
                     <motion.div
                       initial="rest"
                       animate="rest"

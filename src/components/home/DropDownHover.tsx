@@ -3,11 +3,11 @@
 import {
   CreditCardIcon,
   LogOutIcon,
-  SettingsIcon,
+  
   UserIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -71,7 +71,7 @@ const DropDownHover = () => {
         </Link>
         </DropdownMenuItem> */}
         <DropdownMenuItem>
-      <Link href='/dashboard/${user.role}' className="flex gap-2 items-center ">
+      <Link href={`/dashboard/${userRole}`} className="flex gap-2 items-center ">
          <CreditCardIcon />
           <span> Dashboard</span>
           </Link>

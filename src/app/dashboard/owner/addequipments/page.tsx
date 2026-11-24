@@ -182,22 +182,22 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
                 </Select.Trigger>
                 <Select.Popover>
                   <ListBox>
-                    <ListBox.Item id="laptops" textValue="heavy equipment">
+                    <ListBox.Item id="heavy equipment" textValue="heavy equipment">
                       Heavy Equipment <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="mobile phones" textValue="construction equipment">
+                    <ListBox.Item id="construction equipment" textValue="construction equipment">
                       Construction Equipment <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="vehicles" textValue="power tools">
+                    <ListBox.Item id="power tools" textValue="power tools">
                       Power Tools <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="home appliances" textValue="aerial equipment">
+                    <ListBox.Item id="aerial equipment" textValue="aerial equipment">
                       Aerial Equipment <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="furniture" textValue="event equipment">
+                    <ListBox.Item id="event equipment" textValue="event equipment">
                       Event Equipment <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="sports" textValue="photography & video">
+                    <ListBox.Item id="photography & video" textValue="photography & video">
                       Photography & Video <ListBox.ItemIndicator />
                     </ListBox.Item>
                   </ListBox>
@@ -231,17 +231,47 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
                 </Select.Trigger>
                 <Select.Popover>
                   <ListBox>
-                    <ListBox.Item id="used" textValue="good">
+                    <ListBox.Item id="good" textValue="good">
                       Good <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="like new" textValue="better">
+                    <ListBox.Item id="better" textValue="better">
                       Better <ListBox.ItemIndicator />
                     </ListBox.Item>
-                    <ListBox.Item id="refurbished" textValue="excellent">
+                    <ListBox.Item id="excellent" textValue="excellent">
                       Excellent <ListBox.ItemIndicator />
                     </ListBox.Item>
                   </ListBox>
                 </Select.Popover>
+               
+              </Select>
+            </div>
+            {/* rental type */}
+             <div>
+              <Select
+                name="rental type"
+                isRequired
+                className="rounded-2xl placeholder:text-slate-800"
+                placeholder="Select condition"
+              >
+                <Label>Rental Types</Label>
+                <Select.Trigger className="rounded-2xl flex">
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+                <Select.Popover>
+                   <ListBox>
+                    <ListBox.Item id="daily" textValue="daily">
+                      Per day <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                    <ListBox.Item id="weekly" textValue="weekly">
+                      Weekly <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                    <ListBox.Item id="monthly" textValue="monthly">
+                      Monthly <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  </ListBox>
+                </Select.Popover>
+               
               </Select>
             </div>
 

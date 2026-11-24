@@ -17,6 +17,7 @@ const AdminAllequipmentsPage = async () => {
     } else {
       const data = await res.json();
       adminProducts = Array.isArray(data) ? (data as Equipment[]) : [];
+      console.log(adminProducts, "admin products list")
     }
   } catch {
     loadError = "Failed to reach the server";
@@ -26,8 +27,9 @@ const AdminAllequipmentsPage = async () => {
     return (
       <div className="mx-auto w-full max-w-7xl px-4 py-6">
         <h1 className="mb-4 text-2xl font-bold text-foreground">
-          Manage Products
+          Manage Equipments
         </h1>
+     
         <div className="rounded-xl border bg-card px-6 py-10 text-center text-sm text-muted-foreground">
           {loadError}
         </div>

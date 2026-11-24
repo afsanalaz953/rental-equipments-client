@@ -16,6 +16,7 @@ import AdminRejected from "@/components/admin/RejectedProduct";
 import EditProductModal from "@/components/admin/EditProductModal";
 import DeleteProduct from "@/components/admin/DeleteProduct";
 import type { Equipment } from "@/types/equipment";
+// import ProductSearch from '@/components/admin/SearchProducts'
 
 interface AdminProductsTableProps {
   products: Equipment[];
@@ -23,10 +24,10 @@ interface AdminProductsTableProps {
 
 /* ---------- helpers ---------- */
 const productNameOf = (product: Equipment): string =>
-  product.equipmentName ?? product.title ?? "Untitled product";
+  product.title?? product.title ?? "Untitled product";
 
 const imageUrlOf = (product: Equipment): string | undefined =>
-  product.equipmentImage ?? product.image;
+  product.image ?? product.image;
 
 const statusOf = (product: Equipment): string =>
   product.status ?? product.availabilityStatus ?? "Available";
@@ -56,23 +57,27 @@ const AdminProductsTable = ({ products }: AdminProductsTableProps) => {
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-6">
       <h1 className="mb-4 text-2xl font-bold text-foreground">
-        Manage Products
+        Manage Equipments
       </h1>
-
-      <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
+             <span>Total Equipments { products.length}</span>
+             {/* <div className="m-10">
+                     <ProductSearch />
+                   </div> */}
+      <div className="overflow-hidden rounded-xl border bg-card shadow-sm mt-6 ml-20">
         {products.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
             <PackageSearch className="size-10 text-muted-foreground" />
             <div>
               <p className="text-base font-semibold text-foreground">
-                No products found
+                No equipments found
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Products added by owners will show up here.
+                Equipments added by owners will show up here.
               </p>
             </div>
           </div>
         ) : (
+          
           <Table className="min-w-[900px]">
             <TableHeader>
               <TableRow className="bg-muted/40 hover:bg-muted/40">

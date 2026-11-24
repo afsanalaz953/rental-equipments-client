@@ -32,7 +32,7 @@ const dashboardItems: Record<DashboardRole, NavItem[]> = {
   ],
   admin: [
     { icon: House, label: "Overview", link: "/dashboard/admin" },
-    { icon: Magnifier, label: "All Users", link: "/dashboard/admin/allusers" },
+    { icon: Magnifier, label: "All Users", link: "/dashboard/admin/users" },
     { icon: Bell, label: "All Equipment", link: "/dashboard/admin/allequipments" },
     { icon: Envelope, label: "All Rentals", link: "/dashboard/admin/allrentals" },
     { icon: Person, label: "My Profile", link: "/dashboard/admin/profile" },

@@ -41,7 +41,8 @@ const AdminStatusUpdate = ({ adminproductid, status }: AdminStatusUpdateProps) =
 
   if (isApproved) {
     return (
-      <Chip color="success" variant="soft">
+      // <Chip color="success" variant="soft">
+      <Chip className="bg-[ #142A5E]">
         Approved
       </Chip>
     );
@@ -49,12 +50,12 @@ const AdminStatusUpdate = ({ adminproductid, status }: AdminStatusUpdateProps) =
 
   return (
     <Chip
-      color="success"
+      // color="success"
       variant="soft"
       role="button"
       tabIndex={0}
       aria-label="Approve product"
-      className="cursor-pointer select-none"
+      className="cursor-pointer select-none bg-[ #142A5E]"
       onClick={handleApprove}
       onKeyDown={(event) => {
         if (event.key === "Enter" || event.key === " ") {

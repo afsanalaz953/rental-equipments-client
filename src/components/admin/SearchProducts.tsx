@@ -1,31 +1,30 @@
-
 "use client";
 
 import { Search } from "lucide-react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 
 const SearchProducts = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // ✅ ফিক্স ৩: শুধু search প্যারামিটারের মান নেওয়া
-  const searchParamValue = searchParams.get('search') || '';
-  const [searchTerm, setSearchTerm] = useState(searchParamValue);
+  // ✅ শুধু search প্যারামিটারের মান নেওয়া
+  const searchParamValue: string = searchParams.get("search") ?? "";
+  const [searchTerm, setSearchTerm] = useState<string>(searchParamValue);
 
-  // ✅ ফিক্স ৪: URL বদলালে ইনপুট আপডেট হবে (ব্যাক/ফরওয়ার্ড)
+  // ✅ URL বদলালে ইনপুট আপডেট হবে (ব্যাক/ফরওয়ার্ড)
   useEffect(() => {
     setSearchTerm(searchParamValue);
   }, [searchParamValue]);
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>): void => {
+    const value: string = e.target.value;
     setSearchTerm(value);
 
-    const params = new URLSearchParams(searchParams);
-    if (value) params.set('search', value);
-    else params.delete('search');
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) params.set("search", value);
+    else params.delete("search");
 
     router.push(`${pathname}?${params.toString()}`);
   };
@@ -47,4 +46,3 @@ const SearchProducts = () => {
 };
 
 export default SearchProducts;
-
