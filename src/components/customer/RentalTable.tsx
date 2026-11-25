@@ -11,12 +11,14 @@ import OrderStatusBadge from '@/components/customer/OrderStatusBadge';
 interface Booking {
   _id: string;
   title: string;
-  sellerName: string;
-  sellerEmail: string;
+  ownerName: string;
+  ownerEmail: string;
   price: number | string;
   metadata?: {
     quantity?: number;
     totalPrice?: number | string;
+    rentalStartDate? : string;
+    rentalEndtDate? : string;
   };
   status: string;
   orderStatus: string;
@@ -46,6 +48,7 @@ const RentalTable = ({ bookings }: OrderTableProps) => {
        ( <div className='shadow-lg'>
 
  <Table className='lg:w-min-700 bg-[#FFC000] my-10 md:`w-[760px]` '>
+
   {/* <Table.ScrollContainer>
     <Table.Content aria-label="Team members" className='p-4'>
       <Table.Header>
@@ -118,6 +121,9 @@ const RentalTable = ({ bookings }: OrderTableProps) => {
         <Table.Column className= "font-bold text-lg">Equipment Name</Table.Column>
         <Table.Column className= "font-bold text-lg"  isRowHeader>Owner</Table.Column>
         <Table.Column className= "font-bold text-lg">Owner Email</Table.Column>
+        <Table.Column className= "font-bold text-lg">Rental Start Date</Table.Column>
+        <Table.Column className= "font-bold text-lg">Rental End Date</Table.Column>
+
         <Table.Column className= "font-bold text-lg">Price</Table.Column>
         <Table.Column className= "font-bold text-lg">Quantity</Table.Column>
         <Table.Column className= "font-bold text-lg">Total Price</Table.Column>
@@ -141,10 +147,21 @@ const RentalTable = ({ bookings }: OrderTableProps) => {
               />
     
             </Table.Cell> */}
+            {/* Columns:
+Equipment Name
+Rental Start Date
+Rental End Date
+Booking Date
+Total Amount
+Payment Status
+Booking Status
+ */}
             <Table.Cell>{orderedData.title}</Table.Cell>
             <Table.Cell>{orderedData.ownerName}</Table.Cell>
             {/* <Table.Cell>{bookedData._id}</Table.Cell> */}
             <Table.Cell>{orderedData.ownerEmail}</Table.Cell> 
+            <Table.Cell>{orderedData.metadata?.rentalStartDate}</Table.Cell> 
+            <Table.Cell>{orderedData.metadata?.rentalStartDate}</Table.Cell> 
             <Table.Cell>$ {orderedData.price}</Table.Cell>
             <Table.Cell className="" > {orderedData.metadata?.quantity}</Table.Cell> 
             <Table.Cell className="" > {orderedData.metadata?.totalPrice}</Table.Cell> 
