@@ -43,14 +43,14 @@ const DropDownHover = () => {
         render={
           <button
             type="button"
-            className="rounded-full flex flex-col gap-2 justify-center items-center  w-20 h-20 border-transparent hover: transition focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="rounded-full flex flex-col  justify-center items-center  w-20 h-20 border-transparent hover: transition focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
           >
             <Image
               src={user?.image || DEFAULT_AVATAR}
-              alt={user?.name || "User"}
+               alt={user?.name || "User"}
               width={40}
               height={40}
-              className="w-10 h-10 rounded-full object-cover"
+              className="w-10 h-10 rounded-full object-cover text-[#FFC000]"
             />
             <span className="text-[#FFC000] ">{user?.role}</span>
           </button>

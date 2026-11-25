@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 
-/* ---------- Types ---------- */
 interface SingleEquip {
   _id: string;
   title: string;
@@ -13,41 +12,81 @@ interface SingleEquip {
   ownerName: string;
   ownerId: string;
   ownerEmail: string;
+  rentalType?: "perday" | "weekly" | "monthly" | string;
 }
 
 interface BuyFormCustomerProps {
   singleEquip: SingleEquip;
-  action: React.ComponentProps<"form">["action"];   // string | Server Action
-  method?: React.ComponentProps<"form">["method"];   // "get" | "post"
+  action: React.ComponentProps<"form">["action"];
+  method?: React.ComponentProps<"form">["method"];
 }
 
-/* ---------- Component ---------- */
+const MS_PER_DAY = 86_400_000;
+const todayIso = new Date().toISOString().split("T")[0];
+
 export default function BuyFormCustomer({
-  singleEquip,
-  action,
-  method = "post",
+  singleEquip, action, method = "post",
 }: BuyFormCustomerProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { data: session } = authClient.useSession();
-  const user = session?.user;
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [quantity, setQuantity] = useState<number>(1);
+  const [isOpen, setIsOpen]         = useState(false);
+  const { data: session }           = authClient.useSession();
+  const user                        = session?.user;
+  const [isLoading, setIsLoading]   = useState(false);
+  const [quantity, setQuantity]     = useState(1);
 
-  const stock = Number(singleEquip.stock) || 0;
-  const price = Number(singleEquip.price) || 0;
-  const totalPrice = Number((price * quantity).toFixed(2));
+  // 🆕 নতুন state
+  const [startDate, setStartDate]   = useState("");
+  const [endDate, setEndDate]       = useState("");
+  const [error, setError]           = useState("");
 
-  const defaultName = user?.name ?? "";
+  const stock       = Number(singleEquip.stock) || 0;
+  const price       = Number(singleEquip.price) || 0;
+  const rentalType  = singleEquip.rentalType ?? "perday";
+
+  // 🔢 Duration (inclusive)
+  const rentalDays = (() => {
+    if (!startDate || !endDate) return 0;
+    const s = Date.parse(`${startDate}T00:00:00Z`);
+    const e = Date.parse(`${endDate}T00:00:00Z`);
+    if (Number.isNaN(s) || Number.isNaN(e) || e < s) return 0;
+    return Math.floor((e - s) / MS_PER_DAY) + 1;
+  })();
+
+  // 🔢 Billable units by type
+  const billableUnits = (() => {
+    if (rentalDays <= 0) return 0;
+    if (rentalType === "weekly")  return Math.ceil(rentalDays / 7);
+    if (rentalType === "monthly") return Math.ceil(rentalDays / 30);
+    return rentalDays; // perday
+  })();
+
+  const totalPrice = Number((price * billableUnits * quantity).toFixed(2));
+
+  const defaultName  = user?.name  ?? "";
   const defaultEmail = user?.email ?? "";
-  const { title } = singleEquip;
+  const { title }    = singleEquip;
 
-  /* Form submit — React নিজেই action handle করবে, preventDefault/submit() দরকার নেই */
-  const handleBuying = (): void => {
+  // ✅ Validation
+  const handleBuying = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!startDate || !endDate) {
+      e.preventDefault();
+      setError("Please select rental start & end date.");
+      return;
+    }
+    if (billableUnits <= 0) {
+      e.preventDefault();
+      setError("End date must be on/after start date.");
+      return;
+    }
+    if (quantity > stock) {
+      e.preventDefault();
+      setError(`Only ${stock} units available.`);
+      return;
+    }
+    setError("");
     setIsLoading(true);
   };
 
-  /* Quantity change handler — HeroUI TextField এর onChange string দেয় */
-  const handleQuantityChange = (value: string): void => {
+  const handleQuantityChange = (value: string) => {
     const parsed = Number.parseInt(value, 10);
     if (Number.isNaN(parsed)) return;
     setQuantity(Math.min(Math.max(parsed, 1), stock || 1));
@@ -64,12 +103,8 @@ export default function BuyFormCustomer({
           <Modal.Container placement="auto">
             <Modal.Dialog className="sm:max-w-md">
               <Modal.CloseTrigger />
-
               <Modal.Header>
-                <Modal.Heading>Buy Product</Modal.Heading>
-                <p className="mt-1.5 text-sm leading-5 text-muted">
-                  Fill out the form below and proceed to payment.
-                </p>
+                <Modal.Heading>Buy / Rent Product</Modal.Heading>
               </Modal.Header>
 
               <Modal.Body className="p-6">
@@ -80,50 +115,103 @@ export default function BuyFormCustomer({
                     onSubmit={handleBuying}
                     className="flex flex-col gap-4"
                   >
-                    {/* ---------- Hidden metadata ---------- */}
+                    {/* ---- Hidden ---- */}
                     <input type="hidden" name="productId"    value={singleEquip._id} />
                     <input type="hidden" name="price"        value={price} />
-                    <input type="hidden" name="totalPrice"   value={totalPrice} />
                     <input type="hidden" name="quantity"     value={quantity} />
                     <input type="hidden" name="title"        value={title} />
-                    <input type="hidden" name="sellerName"   value={singleEquip.ownerName} />
-                    <input type="hidden" name="sellerId"     value={singleEquip.ownerId} />
-                    <input type="hidden" name="sellerEmail"  value={singleEquip.ownerEmail} />
+                    <input type="hidden" name="rentalType"   value={rentalType} />
+                    <input type="hidden" name="ownerName"    value={singleEquip.ownerName} />
+                    <input type="hidden" name="ownerId"      value={singleEquip.ownerId} />
+                    <input type="hidden" name="ownerEmail"   value={singleEquip.ownerEmail} />
 
-                    {/* ---------- Visible / editable fields ---------- */}
-                    <TextField
-                      isRequired
-                      className="w-full"
-                      name="name"
-                      defaultValue={defaultName}
-                    >
+                    {/* 🆕 Rental window */}
+                    <input type="hidden" name="rentalStartDate" value={startDate} />
+                    <input type="hidden" name="rentalEndDate"   value={endDate} />
+                    <input type="hidden" name="rentalDays"      value={rentalDays} />
+                    <input type="hidden" name="billableUnits"   value={billableUnits} />
+                    <input type="hidden" name="totalPrice"      value={totalPrice} />
+
+                    {/* ---- Visible ---- */}
+                    <TextField isRequired className="w-full" name="name" defaultValue={defaultName}>
                       <Label>Customer Name</Label>
-                      <Input placeholder="Enter your name" className="rounded-2xl" />
+                      <Input placeholder="Enter your name" />
                     </TextField>
 
-                    <TextField
-                      isRequired
-                      type="email"
-                      className="w-full"
-                      name="email"
-                      defaultValue={defaultEmail}
-                    >
+                    <TextField isRequired type="email" className="w-full" name="email" defaultValue={defaultEmail}>
                       <Label>Customer Email</Label>
                       <Input placeholder="Email" />
                     </TextField>
 
                     <TextField className="w-full" name="phone" type="tel">
                       <Label>Customer Phone</Label>
-                      <Input placeholder="Enter your phone number" />
+                      <Input placeholder="Phone" />
                     </TextField>
 
-                    {/* Product name — display only (hidden input ইতিমধ্যেই আছে) */}
-                    <TextField className="w-full" defaultValue={title} isReadOnly>
-                      <Label>Equipment Name</Label>
-                      <Input placeholder="product" />
-                    </TextField>
+                    {/* 🆕 Date pickers */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* <TextField isRequired className="w-full" name="rentalStartDateUi">
+                        <Label>Rental Start</Label>
+                        <Input
+                          type="date"
+                          min={todayIso}
+                          value={startDate}
+                          onChange={(v) => {
+                            setStartDate(v);
+                            if (endDate && endDate < v) setEndDate(v);
+                          }}
+                        />
+                      </TextField> */}
+                      <TextField
+                           isRequired
+                           className="w-full"
+                            // name="rentalStartDateUi"
+                            value={startDate}
+                             onChange={setStartDate}      /* HeroUI TextField string value দেয় */
+                           >
+                        <Label>Rental Start</Label>
+                        <Input type="date" min={todayIso} />
+                     </TextField>
 
-                    {/* ---------- Quantity ---------- */}
+                      {/* <TextField isRequired className="w-full" name="rentalEndDateUi">
+                        <Label>Rental End</Label>
+                        <Input
+                          type="date"
+                          min={startDate || todayIso}
+                          value={endDate}
+                          onChange={(v) => setEndDate(v)}
+                        />
+                      </TextField> */}
+                      {/* <TextField
+                        isRequired
+                        className="w-full"
+                         name="rentalEndDateUi"
+                       value={endDate}
+                        onChange={(v) => {
+                        setEndDate(v);
+                      if (startDate && v < startDate) setStartDate(v);
+                      }}
+                     >
+                    <Label>Rental End</Label>
+                    <Input type="date" min={startDate || todayIso} />
+                   </TextField> */}
+                   <TextField
+                     isRequired
+                      className="w-full"
+                       name="rentalEndDateUi"
+                       value={endDate}
+                         onChange={(v) => {
+                        // end < start হলে শেষ input-টাই রাখো, start ছোঁও না
+                        if (startDate && v < startDate) return;
+                        setEndDate(v);
+                          }}
+                             >
+                              <Label>Rental End</Label>
+                           <Input type="date" min={startDate || todayIso} />
+                           </TextField>
+                    </div>
+
+                    {/* Quantity */}
                     <div className="flex items-center gap-4">
                       <TextField
                         className="w-32"
@@ -135,15 +223,23 @@ export default function BuyFormCustomer({
                       </TextField>
                     </div>
 
+                    {/* 🆕 Duration summary */}
+                    <div className="rounded-xl bg-slate-50 p-3 text-sm space-y-1">
+                      <p>Rental type: <b className="capitalize">{rentalType}</b></p>
+                      <p>Duration: <b>{rentalDays || 0}</b> day(s)</p>
+                      <p>Billable units: <b>{billableUnits || 0}</b></p>
+                      <p>Rate per unit: <b>${price}</b></p>
+                    </div>
+
                     <p className="text-lg font-bold text-blue-600">
-                      Total Amount: {totalPrice} $
+                      Total Amount: ${totalPrice}
                     </p>
 
+                    {error && <p className="text-sm text-red-500">{error}</p>}
+
                     <div className="flex gap-12">
-                      <Button slot="close" variant="secondary">
-                        Cancel
-                      </Button>
-                      <Button type="submit" isDisabled={isLoading}>
+                      <Button slot="close" variant="secondary">Cancel</Button>
+                      <Button type="submit" isDisabled={isLoading || billableUnits <= 0}>
                         {isLoading ? "Creating Order..." : "Buy Equipment"}
                       </Button>
                     </div>
@@ -161,50 +257,69 @@ export default function BuyFormCustomer({
 
 
 
+
+
+
+
 // "use client";
 
-// import React, { useState, useRef } from 'react';
+// import React, { useState } from "react";
 // import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
-// import { ToastContainer, toast } from 'react-toastify';
 // import { authClient } from "@/lib/auth-client";
-// import { useRouter } from 'next/navigation';
 
-// const BuyFormCustomer = ({ singleEquip, action, method }) => {
+// /* ---------- Types ---------- */
+// interface SingleEquip {
+//   _id: string;
+//   title: string;
+//   price: number | string;
+//   stock: number | string;
+//   ownerName: string;
+//   ownerId: string;
+//   ownerEmail: string;
+//    rentalType?: string;
+// }
 
+// interface BuyFormCustomerProps {
+//   singleEquip: SingleEquip;
+//   action: React.ComponentProps<"form">["action"];   // string | Server Action
+//   method?: React.ComponentProps<"form">["method"];   // "get" | "post"
+// }
 
-// // console.log(token, 'modalToken')
-
-
-// //   const router = useRouter();
-//   const [isOpen, setIsOpen] = useState(false);
+// /* ---------- Component ---------- */
+// export default function BuyFormCustomer({
+//   singleEquip,
+//   action,
+//   method = "post",
+// }: BuyFormCustomerProps) {
+//   const [isOpen, setIsOpen] = useState<boolean>(false);
 //   const { data: session } = authClient.useSession();
 //   const user = session?.user;
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [quantity, setQuantity] = useState(1);
-//   // const [orderId, setOrderId] = useState(''); // ← অর্ডার আইডি সংরক্ষণের জন্য স্টেট
+//   const [isLoading, setIsLoading] = useState<boolean>(false);
+//   const [quantity, setQuantity] = useState<number>(1);
 
 //   const stock = Number(singleEquip.stock) || 0;
-//   const price = Number(singleEquip.price )|| 0;
+//   const price = Number(singleEquip.price) || 0;
 //   const totalPrice = Number((price * quantity).toFixed(2));
- 
-//   const defaultName = user?.name || '';
-//   const defaultEmail = user?.email || '';
+
+//   const defaultName = user?.name ?? "";
+//   const defaultEmail = user?.email ?? "";
 //   const { title } = singleEquip;
 
-//   // ফর্ম রেফারেন্স – পরে সাবমিট করার জন্য
-//   // const formRef = useRef(null);
+//   /* Form submit — React নিজেই action handle করবে, preventDefault/submit() দরকার নেই */
+//   const handleBuying = (): void => {
+//     setIsLoading(true);
+//   };
 
-//   const handleBuying = async (e) => {
-//     e.preventDefault(); // ডিফল্ট সাবমিট বন্ধ
-// setIsLoading(true);
-//   // শুধু ফর্ম সাবমিট করছি, অর্ডার বা স্টক আপডেট এখানে নেই
-//   e.target.submit();
-// };
-
+//   /* Quantity change handler — HeroUI TextField এর onChange string দেয় */
+//   const handleQuantityChange = (value: string): void => {
+//     const parsed = Number.parseInt(value, 10);
+//     if (Number.isNaN(parsed)) return;
+//     setQuantity(Math.min(Math.max(parsed, 1), stock || 1));
+//   };
 
 //   return (
 //     <div>
-//       <Button className="w-full" onClick={() => setIsOpen(true)}>
+//       <Button className="w-full" onPress={() => setIsOpen(true)}>
 //         Buy Product
 //       </Button>
 
@@ -213,80 +328,74 @@ export default function BuyFormCustomer({
 //           <Modal.Container placement="auto">
 //             <Modal.Dialog className="sm:max-w-md">
 //               <Modal.CloseTrigger />
+
 //               <Modal.Header>
 //                 <Modal.Heading>Buy Product</Modal.Heading>
 //                 <p className="mt-1.5 text-sm leading-5 text-muted">
 //                   Fill out the form below and proceed to payment.
 //                 </p>
 //               </Modal.Header>
+
 //               <Modal.Body className="p-6">
 //                 <Surface variant="default">
-//                   {/* ফর্মে action ও method প্রপস পাস করুন, এবং onSubmit হ্যান্ডলার দিন */}
 //                   <form
-                    
 //                     action={action}
 //                     method={method}
 //                     onSubmit={handleBuying}
 //                     className="flex flex-col gap-4"
 //                   >
-//                      {/* <input type="hidden" name="token" value={token || ''} /> */}
-//                     {/* অর্ডার আইডি হিডেন ফিল্ড – value স্টেট বা DOM দিয়ে সেট হবে */}
-//                     <input   label="Buyer Name" type="hidden" name="buyerName" value={defaultName} />
-//                     <input   label="Buyer Email" type="hidden" name="buyerEmail" value={defaultEmail} />
-//                     {/* <input type="hidden" name="orderId" value={orderId} /> */}
-//                     <input type="hidden" name="productId" value={singleEquip._id} />
-//   <input   label="price" type="hidden" name="price" value={price} />
-//   <input   label="totalPrice" type="hidden" name="totalPrice" value={totalPrice} />
-//   <input   label="quantity" type="hidden" name="quantity" value={quantity} />
-//   <input   label="title" type="hidden" name="title" value={singleEquip.title} />
-//   <input   label="sellerName" type="hidden" name="sellerName" value={singleEquip.ownerName} />
-//   <input   label="sellerId" type="hidden" name="sellerId" value={singleEquip.ownerId} />
-//   <input   label="sellerEmail" type="hidden" name="sellerEmail" value={singleEquip.ownerEmail} />
-//                     <TextField   label="Buyer Name"  defaultValue={defaultName} className="w-full" name="name" isRequired>
-//                       <Label>Buyer Name</Label>
+//                     {/* ---------- Hidden metadata ---------- */}
+//                     <input type="hidden" name="productId"    value={singleEquip._id} />
+//                     <input type="hidden" name="price"        value={price} />
+//                     <input type="hidden" name="totalPrice"   value={totalPrice} />
+//                     <input type="hidden" name="quantity"     value={quantity} />
+//                     <input type="hidden" name="title"        value={title} />
+//                     <input type="hidden" name="ownerName"   value={singleEquip.ownerName} />
+//                     <input type="hidden" name="ownerId"     value={singleEquip.ownerId} />
+//                     <input type="hidden" name="ownerEmail"  value={singleEquip.ownerEmail} />
+
+//                     {/* ---------- Visible / editable fields ---------- */}
+//                     <TextField
+//                       isRequired
+//                       className="w-full"
+//                       name="name"
+//                       defaultValue={defaultName}
+//                     >
+//                       <Label>Customer Name</Label>
 //                       <Input placeholder="Enter your name" className="rounded-2xl" />
 //                     </TextField>
 
-//                     <TextField   label="Buyer Email" defaultValue={defaultEmail} className="w-full" name="email" type="email" isRequired>
-//                       <Label>Buyer Email</Label>
+//                     <TextField
+//                       isRequired
+//                       type="email"
+//                       className="w-full"
+//                       name="email"
+//                       defaultValue={defaultEmail}
+//                     >
+//                       <Label>Customer Email</Label>
 //                       <Input placeholder="Email" />
 //                     </TextField>
 
-//                     <TextField   label="Buyer Phone" className="w-full" name="phone" type="tel">
-//                       <Label>Buyer Phone</Label>
+//                     <TextField className="w-full" name="phone" type="tel">
+//                       <Label>Customer Phone</Label>
 //                       <Input placeholder="Enter your phone number" />
 //                     </TextField>
 
-//                     <TextField   label="Product Name" defaultValue={title} className="w-full" name="title">
-//                       <Label>Product Name</Label>
+//                     {/* Product name — display only (hidden input ইতিমধ্যেই আছে) */}
+//                     <TextField className="w-full" defaultValue={title} isReadOnly>
+//                       <Label>Equipment Name</Label>
 //                       <Input placeholder="product" />
 //                     </TextField>
 
+//                     {/* ---------- Quantity ---------- */}
 //                     <div className="flex items-center gap-4">
-//                       <TextField  className="w-32" label="Quantity">
-//                         <Input
-//                           type="number"
-//                             name="quantity"
-//                           min={1}
-//                           max={stock}
-//                           value={quantity}
-//                           onChange={(e) => {
-//                             const val = parseInt(e.target.value) || 1;
-//                             setQuantity(Math.min(Math.max(val, 1), stock));
-//                           }}
-//                         />
-// <TextField
-//   className="w-32"
-//   label="Quantity"          // এই লেবেলটি এখন ইনপুটের সাথে যুক্ত হবে
-//   type="number"
-//   name="quantity"
-//   inputProps={{ min: 1, max: stock }}   // min/max এভাবে দিন
-//   value={quantity}
-//   onChange={(e) => {
-//     const val = parseInt(e.target.value) || 1;
-//     setQuantity(Math.min(Math.max(val, 1), stock));
-//   }}
-// />
+//                       <TextField
+//                         className="w-32"
+//                         value={String(quantity)}
+//                         onChange={handleQuantityChange}
+//                       >
+//                         <Label>Quantity</Label>
+//                         <Input type="number" min={1} max={stock} />
 //                       </TextField>
 //                     </div>
 
@@ -298,14 +407,8 @@ export default function BuyFormCustomer({
 //                       <Button slot="close" variant="secondary">
 //                         Cancel
 //                       </Button>
-//                       <Button
-//                         type="submit"
-                     
-//                         // isDisabled={isLoading}
-//                         // isLoading={isLoading}
-//                       >
-//                         Buy Product
-//                         {/* {isLoading ? 'Creating Order...' : 'Buy Product'} */}
+//                       <Button type="submit" isDisabled={isLoading}>
+//                         {isLoading ? "Creating Order..." : "Buy Equipment"}
 //                       </Button>
 //                     </div>
 //                   </form>
@@ -317,11 +420,7 @@ export default function BuyFormCustomer({
 //       </Modal>
 //     </div>
 //   );
-// };
-
-// export default BuyFormCustomer;
-
-
+// }
 
 
 

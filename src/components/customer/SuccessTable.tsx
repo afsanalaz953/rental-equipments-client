@@ -13,6 +13,12 @@ type SuccessTableProps = {
     totalPrice?: string | number;
     quantity?: string | number;
     equipmentId?: string;
+     // 🆕 rental
+    rentalType?: string;
+    rentalStartDate?: string;
+    rentalEndDate?: string;
+    rentalDays?: string | number;
+    billableUnits?: string | number;
   } | null;
 };
 
@@ -22,6 +28,13 @@ const SuccessTable = ({ customerEmail, metadata }: SuccessTableProps) => {
   const price = metadata?.price || '—';
   const totalPrice = metadata?.totalPrice || '—';
   const quantity = metadata?.quantity || '—';
+  // 🆕 rental
+const rentalType      = metadata?.rentalType      || '—';
+const rentalStartDate = metadata?.rentalStartDate || '—';
+const rentalEndDate   = metadata?.rentalEndDate   || '—';
+const rentalDays      = metadata?.rentalDays      || '—';
+const billableUnits   = metadata?.billableUnits   || '—';
+
 
   return (
     <div className="py-10 px-4">
@@ -87,6 +100,19 @@ const SuccessTable = ({ customerEmail, metadata }: SuccessTableProps) => {
             <h2 className="card-title text-2xl font-semibold text-emerald-100 drop-shadow">
               {title}
             </h2>
+            {/* 🆕 Duration summary */}
+                    {/* <div className="rounded-xl bg-slate-50 p-3 text-sm space-y-1">
+                      <p>Rental type: <b className="capitalize">{rentalType}</b></p>
+                      <p>Duration: <b>{rentalDays || 0}</b> day(s)</p>
+                      <p>Billable units: <b>{billableUnits || 0}</b></p>
+                      <p>Rate per unit: <b>${price}</b></p>
+                    </div>
+
+                    <p className="text-lg font-bold text-blue-600">
+                      Total Amount: ${totalPrice}
+                    </p>
+
+                    {error && <p className="text-sm text-red-500">{error}</p>}  */}
 
             <div className="space-y-1 mt-1 text-green-50/95">
               <motion.p
@@ -107,7 +133,45 @@ const SuccessTable = ({ customerEmail, metadata }: SuccessTableProps) => {
                 <span>Quantity</span>
                 <span className="font-mono font-semibold">{quantity}</span>
               </motion.p>
-              <motion.p
+              
+              {/* for rentaltype */}
+              {metadata?.rentalType && (
+  <>
+    <motion.p
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.5 }}
+      className="flex justify-between border-t border-white/10 pt-1"
+    >
+      <span>Rental Type</span>
+      <span className="font-mono font-semibold capitalize">{rentalType}</span>
+    </motion.p>
+    <motion.p
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.6 }}
+      className="flex justify-between"
+    >
+      <span>Rental Period</span>
+      <span className="font-mono font-semibold">
+        {rentalStartDate} → {rentalEndDate}
+      </span>
+    </motion.p>
+    <motion.p
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.7 }}
+      className="flex justify-between"
+    >
+      <span>Duration</span>
+      <span className="font-mono font-semibold">
+        {rentalDays} day(s) · {billableUnits} unit(s)
+      </span>
+    </motion.p>
+  </>
+)}
+{/* total price */}
+          <motion.p
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}

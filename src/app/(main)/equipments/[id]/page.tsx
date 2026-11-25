@@ -4,7 +4,7 @@ import Image from "next/image";
 
 
 // import Link from "next/link";
-// import { Button, Chip, Input } from "@heroui/react";
+// import { Chip } from "@heroui/react";
 // import { User } from 'lucide-react';
 // import { BookOpen, Clock } from "lucide-react";
 import BuyFormCustomer  from "@/components/equipments/BuyFormCustomer";
@@ -49,7 +49,7 @@ console.log(singleEquip,"single product in idpage")
   // const isSlotAvailable = availableStock > 0;
 
 const { title, category, condition, price, status, 
-    description, stock, image,
+    description, stock, image, rentalType,
        
   } = singleEquip;
 
@@ -131,11 +131,11 @@ const { title, category, condition, price, status,
                 </div>
                  <div>
                   <p className='font-bold text-black text-xl'> Price: </p>
-                      <p className='text-orange-800 font-bold, text-3xl' > {price} </p> 
+                      <p className='text-orange-800 font-bold, text-3xl' > ${price} </p> 
                 </div>
-                {/* <div>
-                  <p> {sellerInfo.name} </p>
-                </div> */}
+                <div className = 'bg-yellow-200 justify-centre items-center text-centre ml-2 rounded-full w-25 p-2'>
+                  <p> {rentalType} </p>
+                </div>
                 {/* ----- */}
                 <div>
  {/* {!isSlotAvailable && (
@@ -214,61 +214,3 @@ export default ProductDetailsPage;
 
 
 
-// import React from 'react';
-// import EquipmentDetails from "@/components/equipments/EquipmentDetails";
-// import type { Equipment } from "@/types/equipment";
-
-
-// interface DetailsProps {
-//   params: Promise<{ id: string }>;
-// }
-
-// const DetailsPage = async({params}: DetailsProps) => {
-//     const {id} = await params;
-//     console.log(id, 'id')
-
-// const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/equipments/${id}`,{
-// cache:"no-store",
-// // headers:{
-// //       authorization: `Bearer ${tokenObj.token}`
-// //    }
-// });
-
-// // if (!res.ok) {
-// //   throw new Error(`Failed to fetch event: ${res.status}`);
-// // }
-// // const detailsEvent = (await res.json()) as Event;
-// // console.log(detailsEvent,"single event detail")
-// if (!res.ok) {
-//   throw new Error(`Failed to fetch equip: ${res.status}`);
-// }
-
-// // ❶ বডি টেক্সট হিসেবে পড়ুন (খালি বডি সেফটি)
-// const text = await res.text();
-
-// // ❷ খালি বডি হলে সাথে সাথে এরর দিন
-// if (!text) {
-//   throw new Error("Empty response body from server");
-// }
-
-// const detailsEquip = JSON.parse(text) as Equipment | null;
-
-// // ❸ null হলে কার্ডে পাঠাবেন না
-// if (!detailsEquip) {
-//   return (
-//     <section className="container mx-auto px-4 py-10">
-//       <p className="text-center text-red-500">Equipments not found</p>
-//     </section>
-//   );
-// }
-
-// console.log(detailsEquip, "single equip detail");
-
-//     return (
-//         <div className="min-h-screen bg-[#babec9]">
-//             <EquipmentDetails equipment={detailsEquip} />
-//         </div>
-//     );
-// };
-
-// export default DetailsPage;

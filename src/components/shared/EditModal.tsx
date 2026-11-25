@@ -114,7 +114,7 @@ const EditModal = ({ isOpen, onOpenChange, profile, refetch }) => {
                   showFallback
                   fallback={<span className="text-3xl">👤</span>}
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute border-2 inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-white text-xs font-medium">Change</span>
                 </div>
                 {uploadingImage && (

@@ -81,7 +81,7 @@ const Navbar = () => {
                 </li>
               ) : user ? (
                 <>
-                  <li className="px-3 py-1 text-sm opacity-70 text-white truncate">
+                  <li className="px-3 py-1 text-sm opacity-70 text-yellow-500 truncate">
                     Hi, {user.name}
                   </li>
                   <li>
@@ -151,7 +151,7 @@ const Navbar = () => {
         {/* ============ RIGHT (desktop auth) ============ */}
         <div className="navbar-end hidden md:flex gap-2">
           {isPending ? (
-            <span className="loading loading-spinner text-success" />
+            <span className="loading loading-spinner " />
           ) : user ? (
             <div className="flex items-center gap-2">
               <DropDownHover />

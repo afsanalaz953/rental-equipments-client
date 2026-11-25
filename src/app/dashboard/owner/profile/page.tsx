@@ -13,8 +13,8 @@ const OwnerProfilePage = () => {
   if (isPending) return <div>Loading...</div>;
 
   return (
-    <div className='bg-slate-100 shadow-sm m-4 p-20'>
-      <div className="card bg-base-100 w-150 h-100 shadow-sm container mx-auto">
+    <div className='bg-slate-100 shadow-sm m-4 p-20 '>
+      <div className="card bg-base-100 w-150 h-100 shadow-sm container mx-auto border-4-black">
         <figure className="px-10 pt-10">
           {/* ইমেজ দেখাতে চাইলে আনকমেন্ট করুন */}
           {/* <Image src={user?.image} alt="author" width={150} height={150} /> */}

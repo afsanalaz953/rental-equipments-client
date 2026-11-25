@@ -56,11 +56,12 @@ console.log (user, "user");
                <div className='rounded-full flex gap-2 '> 
          <DropDownHober />
          <div className='flex flex-col '>
-<h2 className='text-orange-600'>{mounted ? user?.name : ''} 
+{/* <h2 className='text-orange-600'>{mounted ? user?.name : ''}  */}
    {/* {mounted ? user?.name : ''} */}
-   </h2> 
+   {/* </h2>   */}
+   
          {/* <span className= {`font-bold ${role === "owner" ? "text-orange-400" : 
-        role === "customer" ? "text-orange-400" : "text-orange-600"}`}>   {mounted ? role : ''}  */}
+        role === "customer" ? "text-orange-400" : "text-orange-600"}`}> {mounted ? role : ''}   */}
         {/* {mounted ? role : ''} */}
          {/* </span>  */}
          </div>

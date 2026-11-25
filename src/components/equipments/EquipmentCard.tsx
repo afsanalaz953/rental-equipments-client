@@ -170,8 +170,8 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
                   {rate}
                 </span>
                 {rentalType && (
-                  <span className="text-[10px] leading-tight font-medium ">
-                    / {rentalType}
+                  <span className="text-[10px] leading-tight text-black font-medium ">
+                     /{rentalType}
                   </span>
                 )}
               </span>
