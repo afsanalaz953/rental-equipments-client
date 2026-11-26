@@ -1,11 +1,29 @@
+import MotionProvider from "@/components/home/MotionProvider";
+import Banner from "@/components/home/Banner";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import CustomerReviews from "@/components/home/CustomerReviews";
+import HowItWorks from "@/components/home/HowItWorks";
+import TrustedOwners from "@/components/home/TrustedOwners";
 import Categories from "@/components/home/Categories";
-
+import Featured from "@/components/home/Featured";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-     <h2>Home</h2>
-     <Categories />
-    </div>
+    <MotionProvider>
+      <div className="flex flex-1 flex-col">
+        {/* 1. Banner */}
+        <Banner />
+        <Categories />
+        <Featured />
+        {/* 2. Why Choose Us */}
+        <WhyChooseUs />
+        {/* 3. Customer Reviews */}
+        <CustomerReviews />
+        {/* 4. How It Works */}
+        <HowItWorks />
+        {/* 5. Trusted Equipment Owners */}
+        <TrustedOwners />
+      </div>
+    </MotionProvider>
   );
 }
