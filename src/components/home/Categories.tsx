@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation"; // ✅ changed
 import { Button, Spinner, Chip } from "@heroui/react";
 import { motion } from "framer-motion";
 
-type CategoryItem =
-  | string
-  | { name?: string; category?: string };
+type CategoryItem = string | { name?: string; category?: string };
 
 interface CategoriesProps {
   selectedCategory?: string;
@@ -15,6 +13,7 @@ interface CategoriesProps {
 
 const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
   const router = useRouter();
+  const searchParams = useSearchParams(); // ✅ added
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,33 +21,24 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
     const fetchCategories = async (): Promise<void> => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`,
-          {}
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/categories`
         );
         if (!res.ok) throw new Error("Failed to fetch categories");
 
-        const data: CategoryItem[] | { data?: CategoryItem[] } = await res.json();
-
-        let catNames: string[];
+        const data: CategoryItem[] | { data?: CategoryItem[] } =
+          await res.json();
 
         const list: CategoryItem[] = Array.isArray(data)
           ? data
           : Array.isArray((data as { data?: CategoryItem[] }).data)
-          ? ((data as { data: CategoryItem[] }).data)
+          ? (data as { data: CategoryItem[] }).data
           : [];
 
-        if (list.length > 0 && typeof list[0] === "object") {
-          catNames = list
-            .map((item) => {
-              if (typeof item === "string") return item;
-              return item.name ?? item.category ?? "";
-            })
-            .filter((n): n is string => typeof n === "string" && n.length > 0);
-        } else {
-          catNames = (list as string[]).filter(
-            (n): n is string => typeof n === "string"
-          );
-        }
+        const catNames = list
+          .map((item) =>
+            typeof item === "string" ? item : item.name ?? item.category ?? ""
+          )
+          .filter((n): n is string => typeof n === "string" && n.length > 0);
 
         setCategories(catNames);
       } catch (error) {
@@ -60,15 +50,13 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
     fetchCategories();
   }, []);
 
+  // ✅ Fixed: existing params preserve
   const handleCategoryClick = (cat: string): void => {
-    const params = new URLSearchParams();
-    if (cat) {
-      params.set("category", cat);
-    } else {
-      params.delete("category");
-    }
+    const params = new URLSearchParams(searchParams.toString());
+    if (cat) params.set("category", cat);
+    else params.delete("category");
     params.set("page", "1");
-    router.push(`/products?${params.toString()}`);
+    router.push(`/equipments?${params.toString()}`, { scroll: false });
   };
 
   if (loading) {
@@ -80,41 +68,42 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
   }
 
   return (
-    <div className="h-40">
-      <Chip className="bg-orange-100 block w-fit m-4 text-orange-600 mx-auto items-center text-center">
+    <div className="justify-center items-center m-20">
+      <Chip className="bg-orange-100 block w-fit m-4 text-orange-600 mx-auto text-center">
         Browse by Category
       </Chip>
       <h2 className="text-3xl text-black text-center font-bold">
         Popular Categories
       </h2>
-      <div className="top-4 flex flex-wrap gap-2">
-        {/* "All" বাটন */}
+
+      <div className="mt-4 flex flex-wrap gap-4 justify-center">
+        {/* All button */}
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             color={!selectedCategory ? "primary" : "default"}
             variant={!selectedCategory ? "solid" : "bordered"}
             onPress={() => handleCategoryClick("")}
-            className="capitalize ml-20"
+            className="capitalize rounded-2xl shadow-lg"
           >
             {selectedCategory ? "Clear Filter" : "All Products"}
           </Button>
         </motion.div>
 
-        {/* বাকি ক্যাটাগরি */}
+        {/* Dynamic categories */}
         {categories.map((cat) => (
           <motion.div
             key={cat}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className=""
+            className="w-40 bg-yellow-300 rounded-2xl shadow-lg overflow-hidden"
           >
             <Button
               color={selectedCategory === cat ? "primary" : "default"}
               variant={selectedCategory === cat ? "solid" : "bordered"}
               onPress={() => handleCategoryClick(cat)}
-              className="capitalize ml-4 text-center w-full justify-center"
+              className="w-full capitalize text-sm justify-center"
             >
-              {cat}
+              <span className="block w-full truncate text-center">{cat}</span>
             </Button>
           </motion.div>
         ))}
@@ -124,6 +113,11 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
 };
 
 export default Categories;
+
+
+
+
+
 
 
 
