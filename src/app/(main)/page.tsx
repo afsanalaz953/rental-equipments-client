@@ -1,9 +1,11 @@
+import Categories from "@/components/home/Categories";
 
 
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
      <h2>Home</h2>
+     <Categories />
     </div>
   );
 }
