@@ -21,7 +21,7 @@ const dashboardItems: Record<DashboardRole, NavItem[]> = {
     { icon: House, label: "Overview", link: "/dashboard/owner" },
     { icon: Magnifier, label: "Add Equipment", link: "/dashboard/owner/addequipments" },
     { icon: Bell, label: "My Equipments", link: "/dashboard/owner/myequipments" },
-    { icon: Envelope, label: "My Rental Equipments", link: "/dashboard/owner/myrentalequipments" },
+    { icon: Envelope, label: "My Rental Equipments", link: "/dashboard/owner/myrentals" },
     { icon: Person, label: "My Profile", link: "/dashboard/owner/profile" },
   ],
   customer: [
