@@ -16,7 +16,17 @@ export const auth = betterAuth({
                 required: false, 
               defaultValue: "customer",
               // input: true
-            } 
+            },
+            address: {
+        type: "string",
+        required: true, // সাইনআপে বাধ্যতামূলক করতে চাইলে true করুন
+        // input: true,       ডিফল্ট, তাই সাইনআপে ইউজার এই ফিল্ড দিতে পারবে
+      },
+      phone: {
+        type: "string",
+        required: true, // সাইনআপে বাধ্যতামূলক করতে চাইলে true করুন
+        input: true, 
+      },
         }
     },
 

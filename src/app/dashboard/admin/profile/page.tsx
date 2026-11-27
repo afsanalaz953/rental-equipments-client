@@ -22,11 +22,12 @@ const AdminProfilePage = () => {
         <div className="card-body items-center text-center">
           <h2 className="card-title font-bold text-3xl">{user?.name}</h2>
           <p className='text-lg'>{user?.email}</p>
-          <div className="card-actions flex gap-4">
+          <div className="card-actions flex flex-col gap-4">
             {/* <Button as={Link} href="/" color="success">Home</Button> */}
             <Button type="submit"  className='w-full bg-amber-600' ><Link href ={"/"} >Home </Link> </Button>
             <Button 
-              color="primary" 
+              // color="primary" 
+              className='bg-blue-900 text-white ml-50'
               onPress={() => setIsModalOpen(true)}
             >
               Update Profile

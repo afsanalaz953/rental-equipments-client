@@ -40,10 +40,10 @@ interface EquipmentDetailsProps {
 
 const conditionStyles: Record<string, string> = {
   excellent: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-  "like new": "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  // "like new": "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
   good: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
   better: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
-  refurbished: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  // refurbished: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
 };
 
 /* ---------- animation variants ---------- */
@@ -99,6 +99,8 @@ const EquipmentDetails: React.FC<EquipmentDetailsProps> = ({ equipment }) => {
     status,
     ownerName,
     ownerEmail,
+    ownerAddress,
+    ownerPhone,
     createdAt,
     // legacy fallbacks
     title,

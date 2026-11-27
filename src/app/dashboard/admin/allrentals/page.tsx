@@ -58,25 +58,28 @@ const AdminRentalManagePage = async ({searchParams}: AdminRentalManagePageProps)
             <Table.Content aria-label="Team members">
               <Table.Header className="rounded bg-blue-900">
                 <Table.Column className="text-lg font-bold">
-                  Product Name
+                  Equipment Name
                 </Table.Column>
                 <Table.Column className="text-lg font-bold">
-                  Buyer Name
+                  Customer Name
                 </Table.Column>
                 <Table.Column className="text-lg font-bold">
-                  Seller Name
+                  Owner Name
                 </Table.Column>
                 <Table.Column className="text-lg font-bold">Price</Table.Column>
                 <Table.Column isRowHeader className="text-lg font-bold">
                   Quantity
                 </Table.Column>
                 <Table.Column isRowHeader className="text-lg font-bold">
+                  Rental Duration
+                </Table.Column>
+                <Table.Column isRowHeader className="text-lg font-bold">
                   Total Price
                 </Table.Column>
                 <Table.Column className="text-lg font-bold">
-                  ProductStatus
+                  BookingStatus
                 </Table.Column>
-                <Table.Column className="text-lg font-bold">Status</Table.Column>
+                <Table.Column className="text-lg font-bold">Payment Status</Table.Column>
               </Table.Header>
 
               <Table.Body>
@@ -98,6 +101,7 @@ const AdminRentalManagePage = async ({searchParams}: AdminRentalManagePageProps)
                     </Table.Cell>
                     <Table.Cell>$ {adorders.price}</Table.Cell>
                     <Table.Cell>{adorders.quantity}</Table.Cell>
+                    <Table.Cell>{adorders.metadata?.rentalDays} Days</Table.Cell>
                     <Table.Cell>$ {adorders.totalPrice}</Table.Cell>
                     <Table.Cell>{adorders.orderStatus}</Table.Cell>
                     <Table.Cell>{adorders.status}</Table.Cell>

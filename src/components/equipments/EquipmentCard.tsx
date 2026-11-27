@@ -32,10 +32,10 @@ interface EquipmentCardProps {
 
 const conditionStyles: Record<string, string> = {
   excellent: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
-  "like new": "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  // "like new": "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
   good: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
   better: "bg-sky-500/15 text-sky-600 dark:text-sky-400",
-  refurbished: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+  // refurbished: "bg-amber-500/15 text-amber-600 dark:text-amber-400",
 };
 
 const statusStyles: Record<string, string> = {
@@ -64,6 +64,7 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
     condition,
     status,
   } = equipment;
+  console.log(equipment, 'equipment for rental tyupe')
 
   const name = equipmentName ?? title ?? "Untitled equipment";
   const imageUrl = equipmentImage ?? image;
@@ -135,10 +136,12 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({ equipment }) => {
                   {rate}
                 </span>
                 {rentalType && (
-                  <span className="text-[10px] leading-tight text-black font-medium">
+                  <span className="text-[10px] bg-yellow-300 leading-tight text-black font-medium">
                     /{rentalType}
                   </span>
+                 
                 )}
+                
               </span>
             )}
           </div>

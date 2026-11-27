@@ -22,6 +22,8 @@ const CustomerProfilePage = () => {
         <div className="card-body items-center text-center">
           <h2 className="card-title font-bold text-3xl">{user?.name}</h2>
           <p className='text-lg'>{user?.email}</p>
+          <p className='text-lg'>{user?.phone}</p>
+          <p className='text-lg'>{user?.address}</p>
           <div className="card-actions flex flex-col gap-4">
             {/* <Button as={Link} href="/" color="success">Home</Button> */}
             <Button type="submit"  className='w-full bg-amber-600' ><Link href ={"/"} >Home </Link> </Button>
@@ -40,7 +42,8 @@ const CustomerProfilePage = () => {
       <EditModal
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpen}
-        profile={{ userId: user?.id, userName: user?.name, image: user?.image }}
+        profile={{ userId: user?.id, userName: user?.name, image: user?.image,
+           phone: user?.phone, address: user?.address }}
         refetch={refetch}   // <-- এটা যোগ করুন
       />
     </div>

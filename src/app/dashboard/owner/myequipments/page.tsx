@@ -9,6 +9,9 @@ import type { Equipment } from '@/types/equipment';
 interface EquipList extends Equipment {
   imageUrl?: string;
   userId?: string;
+  userEmail? : string;
+  userAddress?: string;
+  userPhone? : string;
 }
 
 

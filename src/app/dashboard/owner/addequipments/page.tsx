@@ -19,8 +19,10 @@ interface ProductFormValues {
   category: string;
   price: string;
   condition: string;
+  location: string;
   description: string;
   imageUrl: string;
+  rentalType? : string;
 }
 
 interface ProductPayload {
@@ -29,12 +31,16 @@ interface ProductPayload {
   category: string;
   price: number;
   condition: string;
+  location: string;
   description: string;
   image: string;
   status: ProductStatus;
   ownerId?: string;
   ownerName?: string;
   ownerEmail?: string;
+  ownerAddress?: string;
+  ownerPhone?: string;
+  rentalType? : string;
 }
 
 type ToastPosition =
@@ -90,6 +96,8 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
     const userId = session?.user?.id;
     const userName = session?.user?.name;
     const userEmail = session?.user?.email;
+    const userAddress = session?.user?.address;
+    const userPhone = session?.user?.phone;
 
     const product: ProductPayload = {
       title: formValues.title,
@@ -97,14 +105,18 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
       category: formValues.category,
       price: Number(formValues.price) || 0,
       condition: formValues.condition,
+      location: formValues.location,
       description: formValues.description,
       image: imageUrl,
       status: "Pending",
       ownerId: userId,
       ownerName: userName,
       ownerEmail: userEmail,
+      ownerAddress: userAddress,
+      ownerPhone: userPhone,
+      rentalType:formValues.rentalType
     };
-    console.log("Equipment with userId", product);
+    console.log("productPayload for addequipments", product);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/owner/addequipments`,
@@ -248,7 +260,7 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
             {/* rental type */}
              <div>
               <Select
-                name="rental type"
+                name="rentalType"
                 isRequired
                 className="rounded-2xl placeholder:text-slate-800"
                 placeholder="Select condition"
@@ -268,6 +280,35 @@ const OwnerAddEquipmentPage = (): React.ReactElement => {
                     </ListBox.Item>
                     <ListBox.Item id="monthly" textValue="monthly">
                       Monthly <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                  </ListBox>
+                </Select.Popover>
+               
+              </Select>
+            </div>
+            {/* Location */}
+              <div>
+              <Select
+                name="location"
+                isRequired
+                className="rounded-2xl placeholder:text-slate-800"
+                placeholder="Select location"
+              >
+                <Label>Location</Label>
+                <Select.Trigger className="rounded-2xl flex">
+                  <Select.Value />
+                  <Select.Indicator />
+                </Select.Trigger>
+                <Select.Popover>
+                  <ListBox>
+                    <ListBox.Item id="SawyerAve,Chicago" textValue="SawyerAve,Chicago">
+                     SawyerAve,Chicago <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                    <ListBox.Item id="MontroseAve,Chicago" textValue="MontroseAve,Chicago">
+                      MontroseAve,Chicago <ListBox.ItemIndicator />
+                    </ListBox.Item>
+                    <ListBox.Item id=" FarwellAve,Chicago" textValue=" FarwellAve,Chicago">
+                      FarwellAve,Chicago <ListBox.ItemIndicator />
                     </ListBox.Item>
                   </ListBox>
                 </Select.Popover>

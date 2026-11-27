@@ -46,7 +46,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
     createdAt: new Date().toISOString(),
     metadata,
   }
-
+console.log(paymentData, 'pay data in successpage')
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/checkout_sessions`, {
       method: 'POST',

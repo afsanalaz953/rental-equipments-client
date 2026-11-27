@@ -149,7 +149,7 @@ const AdminProductsTable = ({ products }: AdminProductsTableProps) => {
 
                     {/* price */}
                     <TableCell className="font-semibold text-red-500">
-                      {price === null ? "—" : `৳${price.toLocaleString("en-US")}`}
+                      {price === null ? "—" : `$${price.toLocaleString("en-US")}`}
                     </TableCell>
 
                     {/* status */}

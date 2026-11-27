@@ -14,6 +14,8 @@ type SignUpFormData = {
   name: string;
   email: string;
   image: string;
+  address: string;
+  phone: string;
   password: string;
   role: UserRole;
 };
@@ -37,11 +39,13 @@ const SignupPage = () => {
   const handleRegisterFunc: SubmitHandler<SignUpFormData> = async (data) => {
     console.log(data, "Formdata");
 
-    const { name, email, password, image, role } = data;
+    const { name, email, password, image,address, phone, role } = data;
 
     const { data: res, error } = await authClient.signUp.email({
       name,
       email,
+      address,
+      phone,
       image,
       password,
       // role is a custom field; cast if better-auth's User type doesn't include it
@@ -100,6 +104,34 @@ const SignupPage = () => {
               )}
             </fieldset>
 
+            {/* add */}
+             <fieldset className="fieldset">
+              <legend className="fieldset-legend">Address</legend>
+              <input
+                type="text"
+                className="input placeholder:text-gray-400  "
+                placeholder="Enter Your Address"
+                {...register("address", { required: "Address is required" })}
+              />
+              {errors.address && (
+                <p className="text-red-500">{errors.address.message}</p>
+              )}
+            </fieldset>
+            {/* phone */}
+              <fieldset className="fieldset">
+              <legend className="fieldset-legend">Phone</legend>
+              <input
+                type="tel"
+                className="input placeholder:text-gray-400  "
+                placeholder="Enter Your Phone No."
+                {...register("phone", { required: "Phone No. is required" })}
+              />
+              {errors.phone && (
+                <p className="text-red-500">{errors.phone.message}</p>
+              )}
+            </fieldset>
+
+            {/*Image */}
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Photo URL</legend>
               <input
