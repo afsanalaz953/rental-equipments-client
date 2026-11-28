@@ -71,23 +71,23 @@ export default function OrderStatusBadge({ orderId, currentStatus, onStatusUpdat
   return (
     <div className="flex items-center gap-2">
       {/* স্ট্যাটাস ব্যাজ */}
-      <Chip color={config.color} variant="flat" size="sm" className='bg-green-400'>
+      <Chip color={config.color} variant="soft" size="sm" className='bg-green-400'>
         {config.icon} {config.label}
       </Chip>
 
       {/* অ্যাকশন বাটন (শুধু pending অবস্থায়) */}
       {isPending && (
-        <ButtonGroup size="sm" variant="flat">
+        <ButtonGroup size="sm" variant="primary">
           <Button
-            color="success"
-            isLoading={loading}
+            variant="primary"
+            isDisabled={loading}
             onPress={() => updateStatus('delivered')}
           >
             Deliver
           </Button>
           <Button
-            color="danger"
-            isLoading={loading}
+            variant="danger"
+            isDisabled={loading}
             onPress={() => updateStatus('canceled')}
           >
             Cancel

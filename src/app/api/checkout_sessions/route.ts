@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth";
 
 const MS_PER_DAY = 86_400_000;
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const headersList = await headers()
     const origin = headersList.get('origin')

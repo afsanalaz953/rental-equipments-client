@@ -57,17 +57,17 @@ const SigninPage = () => {
       return;
     }
 
-    if (res?.user?.isBlocked === true) {
-      await authClient.signOut();
-      setTimeout(() => {
-        alert("Your account is blocked. Please contact support.");
-        router.push("/login");
-      }, 100);
-      return;
-    }
+    // if (res?.user?.isBlocked === true) {
+    //   await authClient.signOut();
+    //   setTimeout(() => {
+    //     alert("Your account is blocked. Please contact support.");
+    //     router.push("/login");
+    //   }, 100);
+    //   return;
+    // }
 
     if (res) {
-      router.push("/login");
+      router.push("/signin");
       alert("Signin Successful");
     }
   };

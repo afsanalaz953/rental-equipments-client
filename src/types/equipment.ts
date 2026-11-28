@@ -22,5 +22,7 @@ export interface Equipment {
   ownerId?: string;
   ownerName?: string;
   ownerEmail?: string;
+  ownerAddress?: string;
+  ownerPhone?: string;
   createdAt?: string;
 }

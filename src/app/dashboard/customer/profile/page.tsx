@@ -28,7 +28,7 @@ const CustomerProfilePage = () => {
             {/* <Button as={Link} href="/" color="success">Home</Button> */}
             <Button type="submit"  className='w-full bg-amber-600' ><Link href ={"/"} >Home </Link> </Button>
             <Button 
-              color="primary" 
+              variant="primary"
               className='w-40 bg-[#142A5E] text-white mx-auto'
               onPress={() => setIsModalOpen(true)}
             >

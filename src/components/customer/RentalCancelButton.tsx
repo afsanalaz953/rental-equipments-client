@@ -70,7 +70,7 @@ return (
                     <AlertDialog.Dialog className="sm:max-w-100">
                         <AlertDialog.CloseTrigger />
                         <AlertDialog.Header>
-                            <AlertDialog.Icon orderStatus="danger" />
+                            <AlertDialog.Icon status="danger" />
                             <AlertDialog.Heading>Confirm Cancellation</AlertDialog.Heading>
                         </AlertDialog.Header>
                         <AlertDialog.Body>
@@ -89,7 +89,7 @@ return (
                             <Button
                             onClick = { handleCancelBooking }
                                 slot="close"
-                                color="danger"
+                                variant="danger"
                                 className="font-bold"
 
                             >

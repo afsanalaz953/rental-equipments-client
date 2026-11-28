@@ -21,16 +21,16 @@ import { ImageIcon } from "lucide-react";
 /* ---------- types ---------- */
 export interface UpdateModalProduct {
   _id: string;
-  title: string;
-  stock: number;
+  title?: string;
+  stock?: number;
   image?: string;
   imageUrl?: string;
   equipmentImage?: string;
-  price: number;
-  category: string;
-  condition: string;
-  rentalType: string;
-  description: string;
+  price?: number;
+  category?: string;
+  condition?: string;
+  rentalType?: string;
+  description?: string;
 }
 
 interface UpdateModalProps {
@@ -155,14 +155,14 @@ console.log( 'data after post',data);
     
  window.location.reload();
  toast.success("Product updated successfully ✅", {
-        duration: 1000,
+        autoClose: 1000,
         position: "bottom-left",
       });
     //   router.refresh();
     } catch (err) {
       console.error(err);
       toast.error("Update failed ❌", {
-        duration: 1000,
+        autoClose: 1000,
         position: "bottom-left",
       });
     } finally {

@@ -80,8 +80,7 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
         {/* All button */}
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
-            color={!selectedCategory ? "primary" : "default"}
-            variant={!selectedCategory ? "solid" : "bordered"}
+            variant={!selectedCategory ? "primary" : "outline"}
             onPress={() => handleCategoryClick("")}
             className="capitalize rounded-2xl shadow-lg"
           >
@@ -98,8 +97,7 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
             className="w-40 bg-yellow-300 rounded-2xl shadow-lg overflow-hidden"
           >
             <Button
-              color={selectedCategory === cat ? "primary" : "default"}
-              variant={selectedCategory === cat ? "solid" : "bordered"}
+              variant={selectedCategory === cat ? "primary" : "outline"}
               onPress={() => handleCategoryClick(cat)}
               className="w-full capitalize text-sm justify-center"
             >

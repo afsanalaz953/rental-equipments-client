@@ -6,6 +6,7 @@ import ProductSearch from '@/components/admin/SearchProducts';
 interface OrderMetadata {
   customerName?: string;
   ownerName?: string;
+  rentalDays?: string;
 }
 
 interface AdminOrder {

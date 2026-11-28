@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, ChangeEvent, FormEvent } from "react";
-import { Button, Input, Card, CardHeader, Avatar } from "@heroui/react";
+import { Button, Input, Card, CardHeader, Avatar, TextField, Label, FieldError } from "@heroui/react";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 
@@ -10,6 +10,7 @@ export interface Profile {
   image?: string | null;
   address?: string | null;
   phone?: string | null;
+  userId?: string | null;
 }
 
 // 🔹 Props টাইপ
@@ -125,7 +126,6 @@ const EditModal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <Card
         className="w-full max-w-3xl mx-4 bg-white shadow-2xl rounded-2xl border border-gray-200"
-        radius="lg"
       >
         <CardHeader className="flex flex-col gap-1 pb-4 border-b border-gray-200">
           <h3 className="text-2xl font-bold text-gray-800">Edit Profile</h3>
@@ -139,12 +139,17 @@ const EditModal = ({
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Avatar
-                  src={imagePreview || image || ""}
                   size="lg"
                   className="w-24 h-24 border-2 border-gray-300 group-hover:border-indigo-500 transition-colors"
-                  showFallback
-                  fallback={<span className="text-3xl">👤</span>}
-                />
+                >
+                  <Avatar.Image
+                    src={imagePreview || image || ""}
+                    alt={userName || "profile"}
+                  />
+                  <Avatar.Fallback>
+                    <span className="text-3xl">👤</span>
+                  </Avatar.Fallback>
+                </Avatar>
                 <div className="absolute border-2 inset-0 flex items-center justify-center bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                   <span className="text-white text-xs font-medium">
                     Change
@@ -169,43 +174,52 @@ const EditModal = ({
             </div>
 
             {/* নাম */}
-            <Input
+            <TextField
               name="name"
-              label="Full Name"
-              labelPlacement="outside"
-              placeholder="John Doe"
-              defaultValue={userName || ""}
-              className="bg-gray-50 border-gray-300 focus:border-indigo-500"
               isRequired
-            />
+              defaultValue={userName || ""}
+            >
+              <Label>Full Name</Label>
+              <Input
+                placeholder="John Doe"
+                className="bg-gray-50 border-gray-300 focus:border-indigo-500"
+              />
+              <FieldError />
+            </TextField>
 
             {/* phone */}
-            <Input
+            <TextField
               name="phone"
-              label="Phone"
-              labelPlacement="outside"
-              placeholder="01722347979"
-              defaultValue={phone || ""}
-              className="bg-gray-50 border-gray-300 focus:border-indigo-500"
               isRequired
-            />
+              defaultValue={phone || ""}
+            >
+              <Label>Phone</Label>
+              <Input
+                placeholder="01722347979"
+                className="bg-gray-50 border-gray-300 focus:border-indigo-500"
+              />
+              <FieldError />
+            </TextField>
 
             {/* address */}
-            <Input
+            <TextField
               name="address"
-              label="Address"
-              labelPlacement="outside"
-              placeholder="chocago"
-              defaultValue={address || ""}
-              className="bg-gray-50 border-gray-300 focus:border-indigo-500"
               isRequired
-            />
+              defaultValue={address || ""}
+            >
+              <Label>Address</Label>
+              <Input
+                placeholder="chocago"
+                className="bg-gray-50 border-gray-300 focus:border-indigo-500"
+              />
+              <FieldError />
+            </TextField>
 
             {/* বাটন */}
             <div className="flex justify-end gap-3 pt-2">
               <Button
                 type="button"
-                variant="light"
+                variant="ghost"
                 onPress={() => onOpenChange(false)}
                 className="text-gray-600 hover:bg-gray-100"
               >
@@ -214,8 +228,7 @@ const EditModal = ({
               <Button
                 type="submit"
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold h-11 px-6 shadow-md"
-                radius="lg"
-                isLoading={loading || uploadingImage}
+                isDisabled={loading || uploadingImage}
               >
                 {uploadingImage ? "Uploading Image..." : "Save Changes"}
               </Button>

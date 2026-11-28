@@ -46,7 +46,7 @@ window.location.reload();
 
 
       toast.success("Product deleted successfully ✅", {
-        duration: 4000,
+        autoClose: 4000,
         position: "top-center",
       });
 
@@ -54,7 +54,7 @@ window.location.reload();
     } catch (err) {
       console.error(err);
       toast.error("Delete failed ❌", {
-        duration: 4000,
+        autoClose: 4000,
         position: "top-center",
       });
     } finally {
@@ -92,7 +92,7 @@ window.location.reload();
               <Button
                 onClick={handleDeleteButton}
                 slot="close"
-                color="danger"
+                variant="danger"
                 className="font-bold"
                 isDisabled={deleting}
               >

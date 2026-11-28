@@ -41,7 +41,7 @@ export default async function customerSuccess({ searchParams }: CustomerSuccessP
     title: metadata?.title,
     price: Number(metadata?.price ?? 0),
     totalPrice: Number(metadata?.totalPrice ?? 0),
-    paymentIntentId: payment_intent?.id,
+    paymentIntentId: typeof payment_intent === 'string' ? payment_intent : payment_intent?.id,
     status: 'paid',
     createdAt: new Date().toISOString(),
     metadata,
@@ -144,7 +144,7 @@ console.log(paymentData, 'pay data in successpage')
 
   return (
     <section id="success" className="py-10 px-4">
-      <SuccessTable customerEmail={customerEmail} metadata={metadata} />
+      <SuccessTable customerEmail={customerEmail ?? ''} metadata={metadata} />
     </section>
   )
 }

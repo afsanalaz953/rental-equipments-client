@@ -41,7 +41,7 @@ const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/customer/myor
  bookings = await res.json();
   }
   } catch (error) {
-    console.error('❌ Order fetch error:', error.message);
+    console.error('❌ Order fetch error:', error instanceof Error ? error.message : error);
   }
  console.log(bookings, "bookings Data")
 
