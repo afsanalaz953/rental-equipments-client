@@ -34,13 +34,27 @@ const Categories: React.FC<CategoriesProps> = ({ selectedCategory }) => {
           ? (data as { data: CategoryItem[] }).data
           : [];
 
-        const catNames = list
-          .map((item) =>
-            typeof item === "string" ? item : item.name ?? item.category ?? ""
-          )
-          .filter((n): n is string => typeof n === "string" && n.length > 0);
+        // const catNames = list
+        //   .map((item) =>
+        //     typeof item === "string" ? item : item.name ?? item.category ?? ""
+        //   )
+        //   .filter((n): n is string => typeof n === "string" && n.length > 0);
 
-        setCategories(catNames);
+        // setCategories(catNames);
+const catNames = [
+      ...new Map(
+         list
+      .map((item) =>
+        typeof item === "string"
+          ? item.trim()
+          : (item.name ?? item.category ?? "").trim()
+      )
+      .filter(Boolean)
+      .map((name) => [name.toLowerCase(), name])
+  ).values()
+];
+
+setCategories(catNames);
       } catch (error) {
         console.error("Error fetching categories:", error);
       } finally {

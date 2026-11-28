@@ -46,15 +46,31 @@ const AllEquipmentsPage = async ({ searchParams }: Props) => {
     );
     const catData = await catRes.json();
     const raw = Array.isArray(catData) ? catData : catData?.data ?? [];
-    categories = raw
+    // categories = raw
+    //   .map((c: unknown) =>
+    //     typeof c === "string"
+    //       ? c
+    //       : (c as { name?: string; category?: string })?.name ??
+    //         (c as { category?: string })?.category ??
+    //         ""
+    //   )
+    //   .filter((n: string) => n.length > 0);
+    categories = [
+  ...new Map(
+    raw
       .map((c: unknown) =>
         typeof c === "string"
-          ? c
-          : (c as { name?: string; category?: string })?.name ??
-            (c as { category?: string })?.category ??
-            ""
+          ? c.trim()
+          : (
+              (c as { name?: string; category?: string })?.name ??
+              (c as { category?: string })?.category ??
+              ""
+            ).trim()
       )
-      .filter((n: string) => n.length > 0);
+      .filter(Boolean)
+      .map((name: string) => [name.toLowerCase(), name])
+  ).values(),
+];
   } catch (err) {
     console.error("Failed to load categories", err);
   }
