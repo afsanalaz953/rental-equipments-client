@@ -3,6 +3,7 @@
 
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Label, ListBox, Select } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,15 +27,18 @@ const UserActionButton = ({ userId, role, disabled }: UserActionButtonProps) => 
     setLoading(true);
     setSelectedRole(newRole); // optimistic
 
+    const {data:tokenData} = await authClient.token()
+ console.log(tokenData, "user tokendata")
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/user/${userId}/role`,
         {
           method: "PATCH",
-          credentials: "include",                    // ✅ cookie auth
+          // credentials: "include",                    // ✅ cookie auth
           headers: {
             "Content-Type": "application/json",
-            // JWT হলে: Authorization: `Bearer ${token}`
+          authorization: `Bearer ${tokenData?.token}`
           },
           body: JSON.stringify({ role: newRole }),
         }

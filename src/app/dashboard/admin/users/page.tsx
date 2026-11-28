@@ -1,9 +1,11 @@
 import React from 'react';
-import { cookies } from 'next/headers';               // ✅ নতুন import
+          // ✅ নতুন import
 import { Table } from '@heroui/react';
 import Image from 'next/image';
 import SearchProducts from '@/components/admin/SearchProducts';
 import UserActionButton from '@/components/admin/UserActionButton';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
 
 interface AdminUser {
   _id: string;
@@ -24,20 +26,29 @@ const ManageUserPage = async ({ searchParams }: ManageUserPageProps) => {
   const sParams = await searchParams;
   const search = sParams?.search || '';
 
-  // ✅ cookie forward
-  const cookieStore = await cookies();
-  const cookieHeader = cookieStore.toString();
+  const session = await auth.api.getSession({
+       headers: await headers(), // you need to pass the headers object.
+   });
+   const user = session?.user;
+   const userId = user?.id;
+   console.log('currentUserId:', userId);
+
+    const tokenObj = await auth.api.getToken({
+       headers: await headers()
+     })
+     console.log(tokenObj, "adminUserToken") 
+
+ 
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_SERVER_URL}/api/admin/users?search=${encodeURIComponent(
-      search
-    )}`,
+      search)}`,
     {
       cache: 'no-store',
-      headers: {
-        Cookie: cookieHeader,
-        // JWT হলে: Authorization: `Bearer ${...}`
-      },
+      headers:{
+     authorization: `Bearer ${tokenObj.token}`
+      
+ }
     }
   );
 
@@ -46,11 +57,13 @@ const ManageUserPage = async ({ searchParams }: ManageUserPageProps) => {
     console.error(`API error ${res.status}: ${errorText}`);
     return <div>Failed to load user</div>;
   }
+const userList: AdminUser[] = await res.json()
+console.log(userList, "userlist in admin")
 
-  const userList: AdminUser[] = await res.json();
+  // const userList: AdminUser[] = await res.json();
 
   // ✅ বর্তমান logged-in user (নিজের row-এ select disable করতে)
-  const currentUserId = cookieStore.get('userId')?.value; 
+  // const currentUserId = cookieStore.get('userId')?.value; 
   // অথবা JWT decode করে / আলাদা API থেকে নিন
 
   return (
@@ -123,7 +136,7 @@ const ManageUserPage = async ({ searchParams }: ManageUserPageProps) => {
                         <UserActionButton
                           userId={adUser._id}
                           role={adUser.role}
-                          disabled={adUser._id === currentUserId}   // ✅ নিজের role বদলানো যাবে না
+                          disabled={adUser._id === userId}   // ✅ akhane currentUserId siloনিজের role বদলানো যাবে না
                         />
                       </Table.Cell>
                     </Table.Row>

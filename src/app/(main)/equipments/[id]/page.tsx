@@ -19,15 +19,15 @@ interface DetailsProps {
 const ProductDetailsPage = async({params}: DetailsProps) => {
     const {id} = await params;
     
-//  const {token} = await auth.api.getToken({
-//        headers: await headers(),
-//      })
-//       console.log(token, "idToken")
+ const {token} = await auth.api.getToken({
+       headers: await headers(),
+     })
+      console.log(token, "idToken")
 const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/equipments/${id}`,{
 cache:"no-store",
-// headers:{
-//       authorization: `Bearer ${token}`
-//    }
+headers:{
+      authorization: `Bearer ${token}`
+   }
 });
 
 if (!res.ok) {
